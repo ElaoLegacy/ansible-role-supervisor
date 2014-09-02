@@ -1,9 +1,24 @@
 ---
 
+- name: packages pinning
+  template: >
+    src=pinning.j2
+    dest=/etc/apt/preferences.d/supervisor
+  sudo: yes
+
+- name: repositories
+  apt_repository: >
+    repo="{{ item }}"
+    state=present
+    update_cache=yes
+  with_items:
+    - deb http://debian.proxad.net/debian {{ ansible_lsb.codename }}-backports main
+  sudo: yes
+
 - name: packages
   apt: >
     name={{ item }}
-    state=present
+    state=latest
   with_items:
     - supervisor
   sudo: yes
