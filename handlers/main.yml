@@ -4,4 +4,5 @@
   service: >
     name=supervisor
     state=restarted
+  failed_when: command_result|failed and 'Stopping supervisor: supervisord.' not in command_result.msg
   sudo: yes
